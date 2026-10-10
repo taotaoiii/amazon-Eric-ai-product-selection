@@ -36,3 +36,7 @@ cd amazon-ai-product-selection-v2 && python -X utf8 -m unittest discover -s test
 > ⚠️ `config/anchors.yaml` 里每条锚点当前都是 `calibrated: false`，
 > 用它得出的结论会带 ⚠️ 标。这是设计使然——它们是"带依据的起始值"，不是行业标准。
 > 校准方法见 [`references/calibration.md`](references/calibration.md)。
+
+## 许可证
+
+[MIT](LICENSE)
