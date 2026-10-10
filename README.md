@@ -8,6 +8,7 @@
 - 📖 **完整使用说明** → [`使用说明.md`](使用说明.md)
 - 🤖 **给 AI 的入口** → [`SKILL.md`](SKILL.md)
 - 🎚️ **唯一阈值来源** → [`config/anchors.yaml`](config/anchors.yaml)
+- 🔌 **在其他 AI 工具里用**（Cursor / Copilot / ChatGPT…）→ [`portable/`](portable/README.md)
 
 ## 它解决什么
 
