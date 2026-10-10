@@ -1,0 +1,184 @@
+# ============================================================
+# 亚马逊选品 Skill v2 · 锚点配置
+# 全 skill 唯一阈值来源。改了这里，全 skill 生效。
+# ------------------------------------------------------------
+# 每条锚点的字段：
+#   value          数值；区间写成 [下界, 上界]
+#   basis          这个数凭什么（必填）
+#   calibrated     false = 示例值 → 用它的结论必须打 ⚠️ 标
+#   last_reviewed  上次校准日期
+#   caveat         可选，政策时效性提示
+# ============================================================
+
+meta:
+  version: "2.0"
+  updated: "2026-10-10"
+  note: >
+    以下锚点全部为示例口径，calibrated 均为 false。
+    请按 references/calibration.md 的方法，用你自己 3-5 个已知成败的品回测后再改成 true。
+
+# ---------------- 硬筛闸门（Stage 2） ----------------
+hard_filters:
+  price_band_usd:
+    value: [15, 75]
+    basis: "美国站主流价格带；低于下界广告费占比过高，高于上界决策周期长、退货成本高"
+    calibrated: false
+    last_reviewed: "2026-10-10"
+
+  top10_avg_reviews_max:
+    value: 2000
+    basis: "原口径：TOP10 平均评论数低于此值，视为评论壁垒可以跨越"
+    caveat: >
+      ⚠️ 2026-02-12 起亚马逊变体评论拆分规则生效（2026-05-31 完全生效），
+      单个 listing 的评论数系统性下降，此阈值系统性偏高。
+      使用前必须回亚马逊前台抽样复核，并按复核结果重新校准。
+    calibrated: false
+    last_reviewed: "2026-10-10"
+
+  avg_bsr_max:
+    value: 50000
+    basis: "类目平均 BSR 高于此值，说明整体动销偏弱"
+    calibrated: false
+    last_reviewed: "2026-10-10"
+
+  top3_brand_share_max:
+    value: 0.80
+    basis: "TOP3 品牌销量占比高于此值，视为品牌垄断，新进入者难切分"
+    calibrated: false
+    last_reviewed: "2026-10-10"
+
+  fba_seller_count_max:
+    value: 15
+    basis: "搜索结果中 FBA 卖家数高于此值，说明竞争密度过高"
+    calibrated: false
+    last_reviewed: "2026-10-10"
+
+  return_rate_max:
+    value: 0.05
+    basis: "类目退货率高于此值，售后成本会吃掉利润空间"
+    calibrated: false
+    last_reviewed: "2026-10-10"
+
+  cert_lead_time_months_max:
+    value: 3
+    basis: "强制认证从启动到拿证超过此值，会拖过你的资金周转周期"
+    calibrated: false
+    last_reviewed: "2026-10-10"
+
+# ---------------- 评分锚点（Stage 7） ----------------
+scoring:
+  # 熔断线：缺失维度权重占比严格大于此值时，拒绝输出总分
+  refuse_total_above_missing_weight:
+    value: 0.40
+    basis: "缺失权重过大时，剩余维度算出来的总分已不具备区分度，出分等于误导"
+    calibrated: false
+    last_reviewed: "2026-10-10"
+
+  dimensions:
+    demand:
+      weight: 25
+      label: "需求真实性"
+      metrics:
+        monthly_search_volume:
+          value: [2000, 50000]
+          transform: log
+          direction: higher
+          basis: "核心关键词月搜索量；低于下界需求过窄，高于上界通常 PPC 极其昂贵"
+          calibrated: false
+          last_reviewed: "2026-10-10"
+        monthly_sales_units:
+          value: [300, 3000]
+          transform: log
+          direction: higher
+          basis: "类目 Top10 月销量合计；反映真实成交规模而非搜索热度"
+          caveat: "第三方工具的销量均为估算，业内普遍认为误差 20%-40%，只能用于排序和交叉验证"
+          calibrated: false
+          last_reviewed: "2026-10-10"
+
+    competition:
+      weight: 25
+      label: "竞争可进入性"
+      metrics:
+        top10_avg_reviews:
+          value: [100, 2000]
+          transform: log
+          direction: lower
+          basis: "TOP10 平均评论数越低，评论壁垒越容易跨越（此维度越小越好，区间下界为最优）"
+          caveat: "受 2026-02-12 变体评论拆分规则影响，需回前台复核"
+          calibrated: false
+          last_reviewed: "2026-10-10"
+        category_avg_rating:
+          value: [4.0, 4.6]
+          transform: none
+          direction: lower
+          basis: >
+            类目平均评分越低，说明现有产品普遍不能满足买家，差异化空间越大
+            （与部分口径"评分低于 4.0 即排除"相反——本 skill 取"低分=可进入"，
+             因为低分代表未被满足的需求；若你所在类目低分源于恶意刷评，
+             请在 calibration.md 中记录并调整本条）。
+          calibrated: false
+          last_reviewed: "2026-10-10"
+        fba_seller_count:
+          value: [3, 15]
+          transform: none
+          direction: lower
+          basis: "FBA 卖家数越少，竞争密度越低"
+          calibrated: false
+          last_reviewed: "2026-10-10"
+
+    profit:
+      weight: 20
+      label: "利润空间"
+      metrics:
+        break_even_acos:
+          value: [0.22, 0.45]
+          transform: none
+          direction: higher
+          basis: "盈亏平衡 ACoS 越高，广告投放的容错空间越大"
+          calibrated: false
+          last_reviewed: "2026-10-10"
+        net_margin_after_ad:
+          value: [0.08, 0.25]
+          transform: none
+          direction: higher
+          basis: "广告后净利率；低于下界则在行业平均 ACoS 下没有存活空间"
+          calibrated: false
+          last_reviewed: "2026-10-10"
+
+    supply:
+      weight: 20
+      label: "供应链可行性"
+      metrics:
+        moq:
+          value: [100, 5000]
+          transform: log
+          direction: lower
+          basis: "最小起订量越低，小批量验证越可行（区间下界为最优）"
+          calibrated: false
+          last_reviewed: "2026-10-10"
+        lead_time_days:
+          value: [15, 60]
+          transform: none
+          direction: lower
+          basis: "生产周期越短，资金周转越快、断货风险越低"
+          calibrated: false
+          last_reviewed: "2026-10-10"
+
+    compliance:
+      weight: 10
+      label: "合规风险"
+      metrics:
+        mandatory_cert_count:
+          value: [0, 3]
+          transform: none
+          direction: lower
+          basis: "所需强制认证项数越少，上市周期与成本越可控"
+          calibrated: false
+          last_reviewed: "2026-10-10"
+        ip_red_flag_count:
+          value: [0, 2]
+          transform: none
+          direction: lower
+          basis: "商标/专利检索命中的红牌数；有红牌即应在 Stage 5 直接出局"
+          calibrated: false
+          last_reviewed: "2026-10-10"

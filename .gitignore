@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 本地冒烟测试临时目录（脚本自测用，不入库）
+_smoke/
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Office 临时锁文件
+~$*

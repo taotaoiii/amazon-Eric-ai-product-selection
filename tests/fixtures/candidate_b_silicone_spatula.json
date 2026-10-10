@@ -1,0 +1,47 @@
+{
+  "id": "B-硅胶铲",
+  "name": "硅胶铲",
+  "track": "niche",
+  "stage": "priority",
+  "evidence": [
+    {
+      "kind": "support",
+      "content": "类目月销 2500 件，搜索量 30000，需求规模更大",
+      "source": "卖家精灵导出",
+      "period": "2026-09"
+    },
+    {
+      "kind": "against",
+      "content": "TOP10 平均评论 1800、FBA 卖家 14，竞争密度偏高",
+      "source": "商机探测器",
+      "period": "2026-09"
+    }
+  ],
+  "gaps": [
+    {
+      "missing": "食品安全认证项数待确认",
+      "next_action": "向工厂索要 FDA/LFGB 检测报告清单",
+      "owner": "我"
+    }
+  ],
+  "hard_filter_hits": [],
+  "pain_tags": {
+    "frequency": true,
+    "severity": false,
+    "solvability": true,
+    "economics": true
+  },
+  "metrics": {
+    "monthly_search_volume": 30000,
+    "monthly_sales_units": 2500,
+    "top10_avg_reviews": 1800,
+    "category_avg_rating": 4.5,
+    "fba_seller_count": 14,
+    "break_even_acos": 0.26,
+    "net_margin_after_ad": 0.11,
+    "moq": 3000,
+    "lead_time_days": 45,
+    "mandatory_cert_count": 2,
+    "ip_red_flag_count": 0
+  }
+}

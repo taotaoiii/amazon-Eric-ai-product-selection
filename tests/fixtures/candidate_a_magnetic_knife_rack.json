@@ -1,0 +1,47 @@
+{
+  "id": "A-磁性刀架",
+  "name": "磁性刀架",
+  "track": "niche",
+  "stage": "priority",
+  "evidence": [
+    {
+      "kind": "support",
+      "content": "类目月销 900 件，搜索量 12000，需求成立",
+      "source": "Sorftime MCP",
+      "period": "2026-09"
+    },
+    {
+      "kind": "against",
+      "content": "TOP10 平均评论 400，属中等壁垒，需靠差异化切入",
+      "source": "商机探测器",
+      "period": "2026-09"
+    }
+  ],
+  "gaps": [
+    {
+      "missing": "退货率未拿到",
+      "next_action": "找运营要退货报表",
+      "owner": "我"
+    }
+  ],
+  "hard_filter_hits": [],
+  "pain_tags": {
+    "frequency": true,
+    "severity": true,
+    "solvability": false,
+    "economics": true
+  },
+  "metrics": {
+    "monthly_search_volume": 12000,
+    "monthly_sales_units": 900,
+    "top10_avg_reviews": 400,
+    "category_avg_rating": 4.3,
+    "fba_seller_count": 8,
+    "break_even_acos": 0.35,
+    "net_margin_after_ad": 0.18,
+    "moq": 800,
+    "lead_time_days": 30,
+    "mandatory_cert_count": 1,
+    "ip_red_flag_count": 0
+  }
+}
